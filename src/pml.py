@@ -22,7 +22,7 @@ def init():
 
 def generate(target,level,f):
     count = 0
-    delimiter = ['-','.',' ','_', '/','']
+    delimiter = ['','.',' ',',','-', '_','/',':']
     end = ['.','?','!','']
     inter = ['']
     if target.postCode != '':
@@ -54,14 +54,22 @@ def generate(target,level,f):
 def main():
     file = sys.stdout
     level = 1
-    target = init()
-    for i in sys.argv:
-        if(i == '-c'):
+
+    i=1
+    while i < len(sys.argv):
+        if(sys.argv[i] == '-c'):#add common password to the list
             commonPass = True
-        elif(i.startswith('-o')):
-            file = open(i.split("=",2)[1],'w')
-        elif(i.startswith('-l')):
-            level = i.split("=",2)[1]
+        elif(sys.argv[i].startswith('-o')):#output in a file
+            i+=1
+            file = open(sys.argv[i],'w')
+        elif(sys.argv[i].startswith('-l')):#change the level
+            i+=1
+            level = sys.argv[i]
+        else:
+            print("Don't know the option", sys.argv[i])
+            sys.exit()
+        i+=1
+    target = init()
     generate(target,level, file)
 
 
